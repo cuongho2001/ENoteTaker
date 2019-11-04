@@ -42,3 +42,9 @@ Data Input: it is a gray-value image of size 128×32. Usually, the images from t
 
 For the similar project, please see:
 [https://github.com/jeremyjordan/dog-breed-classifier](url)
+Sample project that use RNN to create hand written notes:
+https://www.cs.toronto.edu/~graves/handwriting.cgi?text=&style=&bias=0.15&samples=3 (url)
+Online sample app that looks really close to Enote, except it takes the hand written letters online and generate text at the same time
+https://ai.googleblog.com/2019/03/rnn-based-handwriting-recognition-in.html (url)
+
+
