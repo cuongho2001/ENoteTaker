@@ -2,6 +2,9 @@
 # Team:
 Scott/Chi/Cole/Fayazud
 
+# Trello:
+https://trello.com/b/HZFBDy31/scribe-squart-for-note-taker (url)
+
 
 ## Project Abstract
 For this project, we will build an application that took the picture of your hand writting and automatically output the .txt/.doc file that you can work with on computer, personally I think it is a super functional application since you can really put it in use in your exam/review study. 
