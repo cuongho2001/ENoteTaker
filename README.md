@@ -13,6 +13,11 @@ For the picture recognition part, We will build a Neural Network (NN) which is t
 
 For the neural network coding part, using Python and finish in Ananconda/Tensorflow would be the quickest way since we can put the training part on Amazon AWS (surely I can do this part). 
 
+## Personas
+https://workspace67425.xtensio.com/edit/a0ndhhle (url)
+
+
+
 ## Project Relevance
 The broader topics covered in this course introduces the students to the following topics and to demonstrate their practical application. 
 -  Object Oriented Design;
