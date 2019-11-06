@@ -51,7 +51,7 @@ Online sample app that looks really close to Enote, except it takes the hand wri
 https://ai.googleblog.com/2019/03/rnn-based-handwriting-recognition-in.html (url)
 
 # SAMPLE CODE(WEEK 1)
-## Sample code slightly simplified implementation of Kim's [Convolutional Neural Networks for Sentence Classification](http://arxiv.org/abs/1408.5882) paper in Tensorflow and will gave us a headstart of the project
+## Sample code slightly simplified implementation of Kim's [Convolutional Neural Networks for Sentence Classification](http://arxiv.org/abs/1408.5882) paper in Tensorflow and will give us a headstart of the project
 
 ## Requirements
 
