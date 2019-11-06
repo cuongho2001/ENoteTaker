@@ -15,6 +15,32 @@ For the picture recognition part, We will build a Neural Network (NN) which is t
 
 For the neural network coding part, using Python and finish in Ananconda/Tensorflow would be the quickest way since we can put the training part on Amazon AWS (surely I can do this part). 
 
+## Personas
+https://workspace67425.xtensio.com/edit/a0ndhhle (url)
+
+### TRAVIS  - A MAIL POSTAL OFFICER
+
+Travis, age 40, is a postal officer for UPS. He went to a community college and have a degree there in MIS. After being unemployed for 2 years, he got a position at an UPS postal office. He lives on his own in a rental apartment. No children or wife. He will need to use EnoteTaker to automate inputting order and package labels into UPS system for delivery process.
+
+Because Travis studied MIS while in college, he is fairly competent with technologies. He can use social media, his cellphone and his laptop well for work, contact, and for entertainment. He can use a few of MIS programs, but he is not very comfortable with them. He is aware of the usefulness of EnoteTaker but isn’t very interested in it. He sees it as a tool for his work, and so the only thing he cares about is that he wants the software to be user-friendly and fast so that it can improve his work efficiency. 
+
+### Jacqueline- a small business owner
+
+Jacqueline is a 28 year old owner and manager of a small business in Indianapolis, Indiana. She completed an undergraduate degree in Business Administration. For a few semesters, she was also considering an IST minor, so she’s taken a few introductory IST courses. 
+Her business has to deal with a lot of paperwork, from accounting to government forms to legal documents. She has boxes and boxes of old accounting records, contracts, reporting forms, etc. which she wants to digitize so that she can search and possibly analyze their contents. While bigger companies have more powerful paid solutions for OCR, her needs in this area are too small-scale to merit the cost. Instead, she’s trying to use an open-source tool called EnoteTaker, adapting it from its original focus on students to use it in a business context.
+
+	Jacqueline’s business experience has made her very familiar with spreadsheets, and she understands the related .csv file format for data sets. Also, she’s worked a lot with fairly complex business management software like ERP systems.
+She’s also somewhat familiar with other structured data languages like XML from her IST courses. Jacqueline’s very excited about applications of machine learning technology, but she has a very shallow understanding of the underlying theory/mechanics. 
+While digitizing her business records, Jacqueline has some particular objectives. Since she’ll be digitizing different kinds of documents, she’d be interested in features which could partially automate sorting scanned pages into different categories of documents (e.g. accounting papers, legal forms, contracts, etc.). She’s also particularly interested in features that help with transcribing documents with a mix of printed text and handwriting (e.g. filled-out forms or filled-out/signed contracts). Ultimately, one of her major goals in digitizing these records is to perform analyses of the text in certain sets of documents (e.g. accounts payable from 2012 through 2017), so she’d appreciate features that helped her to structure the output (e.g. having the option to transform some transcribed text into a .csv format before saving it in an output file).
+
+
+### Emma, a pharmacist
+
+Emma, age 27, is a pharmacist at ABC pharmacy in Philadelphia. She attended and graduated from Temple University School of Pharmacy. She works long hours and has many responsibilities given to her from corporate. She stands in front of the computer screen for most of her shift and must verify all the prescriptions that are filled in the bottles. Any help to make her job easier will bring her felicity.
+
+The EnoteTaker is a product that will make her job easier. Doctors are notoriously known for having bad handwriting, and it makes the pharmacists’ job that much harder to try and decipher these hieroglyphics. The EnoteTaker can help them by being able to convert the unreadable handwriting to readable text. This will allow the pharmacy to move much more smoothly and faster, which will keep corporate happy and as a result, Emma will be happy.
+
+
 ## Project Relevance
 The broader topics covered in this course introduces the students to the following topics and to demonstrate their practical application. 
 -  Object Oriented Design;
