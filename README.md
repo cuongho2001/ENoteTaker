@@ -6,7 +6,7 @@ Scott/Chi/Cole/Fayazud
 https://trello.com/b/HZFBDy31/scribe-squart-for-note-taker (url)
 
 ## About EnoteTaker (Vision)
-FOR people WHO need a way to organize their handwritten notes into text files that can work on computer, The ENoteTaker will fulfills their needs by taking their pictures of handwritten notes into sevral trained neural network, finally automatically output the files they want. UNLIKE normal online handwriting recognize system, the focus of ENoteTaker is the speeding process and high accuracy of letter recognition rather than letting user waiting forever while getting the wrong output. OUR product enables everyone enjoy the note coverting system without paying extra online application fee, yes it is totally free and open source as you can see.
+FOR people WHO need a way to organize their handwritten notes into text files which they can work with on computers, The ENoteTaker will fulfill their needs by processing their pictures of handwritten notes with several trained neural networks, automatically outputting the text files they want. UNLIKE normal online handwriting recognition systems, the focus of ENoteTaker is the speed of the process and high accuracy of letter recognition rather than leaving users waiting forever only to get the wrong output. OUR product enables everyone to enjoy the note coverting system without paying an extra online application fee, because it is totally free and open source.
 
 ## Project Abstract
 For this project, we will build an application that took the picture of your hand writting and automatically output the .txt/.doc file that you can work with on computer, personally I think it is a super functional application since you can really put it in use in your exam/review study. 
