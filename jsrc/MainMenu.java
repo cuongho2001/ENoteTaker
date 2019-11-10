@@ -11,6 +11,8 @@ private JTextArea isTrained;
 private JButton transcribeButton;
 private JScrollPane transcriptionOutput;
 private JTextArea chosenImageFiles;
+private JList imagePreviews;
+private JScrollPane imagePreviewsScrollWrapper;
 
 public MainMenu( )
 {
@@ -30,6 +32,7 @@ public MainMenu( )
 		{
 			//TODO create a JFileChooser to select the image file
 			// also set the chosenImageFiles text area to that file name
+			//TODO it might also be relatively easy to have an image preview pane which could show any number of images inside itself
 		}
 	});
 	transcribeButton.addActionListener(new ActionListener()
