@@ -1,17 +1,17 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenu
 {
-private JPanel rootPanel;
+public JPanel rootPanel;
 private JButton chooseSourceImageButton;
 private JButton trainNeuralNetworkButton;
 private JTextArea isTrained;
 private JButton transcribeButton;
 private JScrollPane transcriptionOutput;
 private JTextArea chosenImageFiles;
-private JList imagePreviews;
 private JScrollPane imagePreviewsScrollWrapper;
 
 public MainMenu( )
@@ -33,6 +33,14 @@ public MainMenu( )
 			//TODO create a JFileChooser to select the image file
 			// also set the chosenImageFiles text area to that file name
 			//TODO it might also be relatively easy to have an image preview pane which could show any number of images inside itself
+
+			// In this process argument passed
+			// is an object of File System View
+			JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView());
+
+			// Open the save dialog
+			j.showOpenDialog(null);
+
 		}
 	});
 	transcribeButton.addActionListener(new ActionListener()
