@@ -1,3 +1,7 @@
+import jep.Interpreter;
+import jep.JepException;
+import jep.SharedInterpreter;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +26,16 @@ public MainMenu( )
 		public void actionPerformed( final ActionEvent e )
 		{
 			//TODO use Jython interpreter to invoke python code for training the NN's
+			try ( Interpreter interp = new SharedInterpreter() )
+			{
+				interp.exec("import train");//include file path relative to project root?
+
+				interp.exec("train.main()");
+			} catch ( JepException ex )
+			{
+				System.err.println("Python interpreter failed while training the neural network:");
+				ex.printStackTrace();
+			}
 		}
 	});
 
@@ -44,4 +58,6 @@ public MainMenu( )
 		}
 	});
 }
+
+public JPanel getRootPanel( ) { return this.rootPanel; }
 }
