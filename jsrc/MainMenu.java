@@ -1,4 +1,5 @@
 import jep.Interpreter;
+import jep.JepConfig;
 import jep.JepException;
 import jep.SharedInterpreter;
 
@@ -26,11 +27,20 @@ public MainMenu( )
 		public void actionPerformed( final ActionEvent e )
 		{
 			//TODO use Jython interpreter to invoke python code for training the NN's
+			JepConfig jConfig = new JepConfig().addIncludePaths("./CNNRNN");
+			try
+			{
+				SharedInterpreter.setConfig(jConfig);
+			} catch ( JepException ex )
+			{
+				System.err.println("Failed to configure the Python interpreter");
+				ex.printStackTrace();
+			}
 			try ( Interpreter interp = new SharedInterpreter() )
 			{
-				interp.exec("import train");//include file path relative to project root?
+				interp.eval("import train");
 
-				interp.exec("train.main()");
+				interp.eval("train.main()");
 			} catch ( JepException ex )
 			{
 				System.err.println("Python interpreter failed while training the neural network:");

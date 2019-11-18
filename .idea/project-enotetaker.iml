@@ -11,14 +11,14 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="file://C:/Program Files/Python38/Lib/site-packages/jep" />
+          <root url="file://C:/Program Files/Python37/Lib/site-packages/jep" />
         </CLASSES>
         <JAVADOC />
         <NATIVE>
-          <root url="file://C:/Program Files/Python38/Lib/site-packages/jep" />
+          <root url="file://C:/Program Files/Python37/Lib/site-packages/jep" />
         </NATIVE>
         <SOURCES />
-        <jarDirectory url="file://C:/Program Files/Python38/Lib/site-packages/jep" recursive="false" />
+        <jarDirectory url="file://C:/Program Files/Python37/Lib/site-packages/jep" recursive="false" />
       </library>
     </orderEntry>
   </component>
