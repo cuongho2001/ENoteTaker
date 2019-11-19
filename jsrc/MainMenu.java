@@ -32,6 +32,10 @@ public MainMenu( )
 		@Override
 		public void actionPerformed( final ActionEvent e )
 		{
+			isTrained.setText("Neural Network is now training");
+			rootPanel.update(rootPanel.getGraphics());
+
+
 			//TODO use Jython interpreter to invoke python code for training the NN's
 			JepConfig jConfig = new JepConfig().addIncludePaths("./CNNRNN")
 											   .addIncludePaths("./CNNTXT");
@@ -43,7 +47,6 @@ public MainMenu( )
 				System.err.println("Failed to configure the Python interpreter");
 				ex.printStackTrace();
 			}
-			isTrained.setText("Neural Network is now training");
 			try ( Interpreter interp = new SharedInterpreter() )
 			{
 				interp.exec("import train");
