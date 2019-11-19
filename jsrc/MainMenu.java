@@ -2,10 +2,13 @@ import jep.Interpreter;
 import jep.JepConfig;
 import jep.JepException;
 import jep.SharedInterpreter;
+import jep.python.PyObject;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenu
 {
@@ -21,13 +24,17 @@ private JScrollPane imagePreviewsScrollWrapper;
 
 public MainMenu( )
 {
+	isTrained.setText("Neural Network is not yet trained");
+
+
 	trainNeuralNetworkButton.addActionListener(new ActionListener()
 	{
 		@Override
 		public void actionPerformed( final ActionEvent e )
 		{
 			//TODO use Jython interpreter to invoke python code for training the NN's
-			JepConfig jConfig = new JepConfig().addIncludePaths("./CNNRNN");
+			JepConfig jConfig = new JepConfig().addIncludePaths("./CNNRNN")
+											   .addIncludePaths("./CNNTXT");
 			try
 			{
 				SharedInterpreter.setConfig(jConfig);
@@ -36,15 +43,25 @@ public MainMenu( )
 				System.err.println("Failed to configure the Python interpreter");
 				ex.printStackTrace();
 			}
+			isTrained.setText("Neural Network is now training");
 			try ( Interpreter interp = new SharedInterpreter() )
 			{
-				interp.eval("import train");
+				interp.exec("import train");
 
-				interp.eval("train.main()");
+				PyObject pySysObj = interp.getValue("sys", PyObject.class);
+
+				List<String> pyArgv = new ArrayList<>();
+				pyArgv.add("EnoteTaker");
+				pySysObj.setAttr("argv", pyArgv);
+
+				interp.exec("train.main()");
+
+				isTrained.setText("Neural Network is trained");
 			} catch ( JepException ex )
 			{
 				System.err.println("Python interpreter failed while training the neural network:");
 				ex.printStackTrace();
+				isTrained.setText("Neural Network training failed: neural network is not yet trained");
 			}
 		}
 	});
