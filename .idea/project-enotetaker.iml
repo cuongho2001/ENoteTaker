@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Python" name="Python">
+      <configuration sdkName="Python 3.7 (project-enotetaker)" />
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -21,5 +26,6 @@
         <jarDirectory url="file://C:/Program Files/Python37/Lib/site-packages/jep" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Python 3.7 (project-enotetaker) interpreter library" level="application" />
   </component>
 </module>
