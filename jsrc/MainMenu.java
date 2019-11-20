@@ -41,22 +41,31 @@ public MainMenu( )
 		@Override
 		public void actionPerformed( final ActionEvent e )
 		{
-			JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView());
+			//this is a fileChooser used to store the selected file
+			JFileChooser selectedImage = new JFileChooser(FileSystemView.getFileSystemView());
 
-			//shows open dialog box
-			int r = j.showOpenDialog(null);
+			//shows open dialog box and stores the option selected by the user
+			int r = selectedImage.showOpenDialog(null);
 
+			//if user chose to open a file
 			if ( r == JFileChooser.APPROVE_OPTION )
 			{
-				File fi = new File(j.getSelectedFile()
+				//holds the file selected by user
+				File imageFile = new File(selectedImage.getSelectedFile()
 									.getAbsolutePath());
 				BufferedImage image = null;
 
 				try
 				{
-					image = ImageIO.read(fi);
+					//declares the buffered image to be the image that is selected by the user
+					image = ImageIO.read(imageFile);
+					//"converts" the image into an icon and scales it to match the size of the jlabel
 					ImageIcon icon = new ImageIcon(image.getScaledInstance(150, 300, image.SCALE_FAST));
+					//sets imageLabel to hold the image
 					imageLabel.setIcon(icon);
+					//gets the absolute path of the selected image and sets the text into the chosenImageFiles TextArea
+					chosenImageFiles.setText(selectedImage.getSelectedFile()
+														  .getAbsolutePath());
 				} catch ( IOException ex )
 				{
 					ex.printStackTrace();
