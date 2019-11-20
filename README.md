@@ -5,6 +5,9 @@ Scott/Chi/Cole/Fayazud
 # Trello:
 https://trello.com/b/HZFBDy31/scribe-squart-for-note-taker (url)
 
+## Progress of app:
+https://github.com/3296f19temple/project-enotetaker/blob/Chizhang2019-patch-1/Screenshot_20191120-074443.png (url)
+
 ## About EnoteTaker (Vision)
 FOR people WHO need a way to organize their handwritten notes into text files which they can work with on computers, The ENoteTaker will fulfill their needs by processing their pictures of handwritten notes with several trained neural networks, automatically outputting the text files they want. UNLIKE normal online handwriting recognition systems, the focus of ENoteTaker is the speed of the process and high accuracy of letter recognition rather than leaving users waiting forever only to get the wrong output. OUR product enables everyone to enjoy the note conversion system without paying an extra online application fee, because it is totally free and open source.
 
