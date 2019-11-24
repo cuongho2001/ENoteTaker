@@ -1,5 +1,11 @@
-import numpy as np
 import re
+
+import numpy as np
+import tensorflow as tf
+
+
+def set_tf_flag(flag_name, flag_val, flag_help):
+    tf.flags.DEFINE_string(flag_name, flag_val, flag_help)
 
 
 def clean_str(string):
