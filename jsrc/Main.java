@@ -2,6 +2,7 @@ import javax.swing.*;
 
 public class Main
 {
+public static final String programName = "ENoteTaker";
 
 public static void main( String[] args )
 {
