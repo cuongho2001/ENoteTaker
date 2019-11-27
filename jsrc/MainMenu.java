@@ -20,6 +20,8 @@ private JTextArea chosenImageFiles;
 private JScrollPane imagePreviewsScrollWrapper;
 private JTextPane outPutOfImage;
 private JLabel imageLabel;
+private JButton tesseractButton;
+private JButton saveButton;
 
 public MainMenu( )
 {
@@ -95,7 +97,7 @@ public MainMenu( )
 				try
 				{
 					// String
-					String s1 = "", sl = "";
+					String string1 = "", string2 = "";
 
 					// File reader
 					FileReader fr = new FileReader(fi);
@@ -103,20 +105,32 @@ public MainMenu( )
 					// Buffered reader
 					BufferedReader br = new BufferedReader(fr);
 
-					sl = br.readLine();
+					string2 = br.readLine();
 
-					while ( (s1 = br.readLine()) != null )
+					while ( (string1 = br.readLine()) != null )
 					{
-						sl = sl + "\n" + s1;
+						string2 = string2 + "\n" + string1;
 					}
 
 					// Set the text
-					outPutOfImage.setText(sl);
+					outPutOfImage.setText(string2);
 				} catch ( Exception evt )
 				{
 					JOptionPane.showMessageDialog(rootPanel, evt.getMessage());
 				}
 			}
+		}
+	});
+
+	saveButton.addActionListener(new ActionListener()
+	{
+		@Override
+		public void actionPerformed( final ActionEvent e )
+		{
+			//gets the text that has been transcribed
+			String editedText = outPutOfImage.getText();
+			//needs logic to be saved to a file
+
 		}
 	});
 }
