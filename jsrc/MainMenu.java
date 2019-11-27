@@ -1,4 +1,3 @@
-import javax.imageio.ImageIO;
 import jep.Interpreter;
 import jep.JepConfig;
 import jep.JepException;
@@ -6,14 +5,13 @@ import jep.SubInterpreter;
 import jep.python.PyCallable;
 import jep.python.PyObject;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +19,7 @@ import java.util.List;
 public class MainMenu
 {
 public JPanel rootPanel;
-private final String programName = "EnoteTaker";
-private JPanel rootPanel;
+
 private JButton chooseSourceImageButton;
 private JButton trainNeuralNetworkButton;
 private JTextArea isTrained;
@@ -76,18 +73,6 @@ public MainMenu( )
 		@Override
 		public void actionPerformed( final ActionEvent e )
 		{
-			//TODO create a JFileChooser to select the image file
-			// also set the chosenImageFiles text area to that file name
-			//TODO it might also be relatively easy to have an image preview pane which could show any number of images inside itself
-
-		}
-	});
-
-	chooseSourceImageButton.addActionListener(new ActionListener()
-	{
-		@Override
-		public void actionPerformed( final ActionEvent e )
-		{
 			//this is a fileChooser used to store the selected file
 			JFileChooser selectedImage = new JFileChooser(FileSystemView.getFileSystemView());
 
@@ -127,7 +112,8 @@ public MainMenu( )
 		{
 			//TODO use Jython Interpreter to invoke python code to use the current NN's on the loaded image
 
-			JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView());
+
+			/*JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView());
 
 			//shows open dialog box
 			int r = j.showOpenDialog(null);
@@ -162,21 +148,8 @@ public MainMenu( )
 				} catch ( Exception evt )
 				{
 					JOptionPane.showMessageDialog(rootPanel, evt.getMessage());
-				}
-			}
-		}
-	});
-
-	saveButton.addActionListener(new ActionListener()
-	{
-		@Override
-		public void actionPerformed( final ActionEvent e )
-		{
-			//gets the text that has been transcribed
-			String editedText = outPutOfImage.getText();
-			//needs logic to be saved to a file
-
-
+				}*/
+  
 			try ( Interpreter interp = new SubInterpreter(jConfig) )
 			{
 				PyObject pySysObj = interp.getValue("sys", PyObject.class);
@@ -220,5 +193,24 @@ public MainMenu( )
 			}
 		}
 	});
+
+	saveButton.addActionListener(new ActionListener()
+	{
+		@Override
+		public void actionPerformed( final ActionEvent e )
+		{
+			//gets the text that has been transcribed
+			String editedText = outPutOfImage.getText();
+			//needs logic to be saved to a file
+
+		}
+	});
 }
+
+private void createUIComponents( )
+{
+	// TODO: place custom component creation code here
+}
+
+public JPanel getRootPanel( ) { return this.rootPanel; }
 }
