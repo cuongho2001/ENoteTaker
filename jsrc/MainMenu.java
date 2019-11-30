@@ -1,10 +1,9 @@
-/*import jep.Interpreter;
+import jep.Interpreter;
 import jep.JepConfig;
 import jep.JepException;
 import jep.SubInterpreter;
 import jep.python.PyCallable;
 import jep.python.PyObject;
-*/
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -173,6 +172,9 @@ public MainMenu( )
 			//gets the text that has been transcribed
 
 			//this is the raw file name without extension that user will enter
+			//User can choose to store file anyhwhere by entering the absolute path of the location and then making name of file last
+			//portion of the path
+			//ex: C:\User\Documents\textFile1	--> textFile1 is name of file
 			String rawFileName = textFileName.getText();
 			//this has the '.txt' extension added so that the computer will recognize it when user wants to open it.
 			String fileName = rawFileName + ".txt";
@@ -189,7 +191,7 @@ public MainMenu( )
 						"ERROR", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					//Creates a new file object to store the file
+					//Creates a new file object (with name user entered) to store the file
 					File newTextFile = new File(fileName);
 					//checks to see if it does not already exist
 					if ( !newTextFile.exists() )
