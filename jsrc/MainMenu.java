@@ -165,6 +165,8 @@ public MainMenu( )
 		@Override
 		public void actionPerformed( final ActionEvent e )
 		{
+			saveButton.setToolTipText(
+				"If you would like to save this file to a specific place then enter absolute path with name at the end of last \\");
 			//Make a new textbox that asks for name of file
 			//When users clicks save, it checks whether it is empty or not
 			//make PrintWrite hold the name
@@ -193,9 +195,11 @@ public MainMenu( )
 				{
 					//Creates a new file object (with name user entered) to store the file
 					File newTextFile = new File(fileName);
+					//learned some material from stackoverflow
 					//checks to see if it does not already exist
 					if ( !newTextFile.exists() )
 					{
+
 						//printWriter allows for the writing of objects to text rather than bytes
 						PrintWriter savingText = new PrintWriter(newTextFile);
 						//writes the text to the file
