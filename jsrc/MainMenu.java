@@ -1,9 +1,10 @@
-import jep.Interpreter;
+/*import jep.Interpreter;
 import jep.JepConfig;
 import jep.JepException;
 import jep.SubInterpreter;
 import jep.python.PyCallable;
 import jep.python.PyObject;
+*/
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +28,12 @@ private JButton trainNeuralNetworkButton;
 private JTextArea isTrained;
 private JButton transcribeButton;
 private JTextArea chosenImageFiles;
-private JScrollPane imagePreviewsScrollWrapper;
 private JTextPane outPutOfImage;
 private JLabel imageLabel;
 private JButton tesseractButton;
 private JButton saveButton;
+private JTextPane textFileName;
+private JTextPane error;
 
 public MainMenu( )
 {
@@ -113,43 +117,6 @@ public MainMenu( )
 			//TODO use Jython Interpreter to invoke python code to use the current NN's on the loaded image
 
 
-			/*JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView());
-
-			//shows open dialog box
-			int r = j.showOpenDialog(null);
-
-			// If the user selects a file
-			if ( r == JFileChooser.APPROVE_OPTION )
-			{
-				// Set the label to the path of the selected directory
-				File fi = new File(j.getSelectedFile()
-									.getAbsolutePath());
-
-				try
-				{
-					// String
-					String string1 = "", string2 = "";
-
-					// File reader
-					FileReader fr = new FileReader(fi);
-
-					// Buffered reader
-					BufferedReader br = new BufferedReader(fr);
-
-					string2 = br.readLine();
-
-					while ( (string1 = br.readLine()) != null )
-					{
-						string2 = string2 + "\n" + string1;
-					}
-
-					// Set the text
-					outPutOfImage.setText(string2);
-				} catch ( Exception evt )
-				{
-					JOptionPane.showMessageDialog(rootPanel, evt.getMessage());
-				}*/
-  
 			try ( Interpreter interp = new SubInterpreter(jConfig) )
 			{
 				PyObject pySysObj = interp.getValue("sys", PyObject.class);
@@ -184,7 +151,7 @@ public MainMenu( )
 				interp.exec("with open(notebookPath) as f:\n" +
 							"    nb = nbformat.read(f, as_version=4)");
 				interp.exec("ep.preprocess(nb, {'metadata': {'path': 'notebooks/'}})");
-				 */
+				*/
 
 			} catch ( JepException ex )
 			{
@@ -199,10 +166,53 @@ public MainMenu( )
 		@Override
 		public void actionPerformed( final ActionEvent e )
 		{
+			//Make a new textbox that asks for name of file
+			//When users clicks save, it checks whether it is empty or not
+			//make PrintWrite hold the name
+			//savingText.println(editedText); --> this will print to the file
 			//gets the text that has been transcribed
-			String editedText = outPutOfImage.getText();
-			//needs logic to be saved to a file
 
+			//this is the raw file name without extension that user will enter
+			String rawFileName = textFileName.getText();
+			//this has the '.txt' extension added so that the computer will recognize it when user wants to open it.
+			String fileName = rawFileName + ".txt";
+			//This is the text that the user has edited in the GUI
+			String editedText = outPutOfImage.getText();
+
+			//needs logic to be saved to a file
+			try
+			{
+				//is the user has not entered a file name to save then show error
+				if ( rawFileName.equals("") )
+				{
+					JOptionPane.showMessageDialog(error, "Please enter a name for the file you are trying to save.",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+				} else
+				{
+					//Creates a new file object to store the file
+					File newTextFile = new File(fileName);
+					//checks to see if it does not already exist
+					if ( !newTextFile.exists() )
+					{
+						//printWriter allows for the writing of objects to text rather than bytes
+						PrintWriter savingText = new PrintWriter(newTextFile);
+						//writes the text to the file
+						savingText.println(editedText);
+						//closes the printwriter
+						savingText.close();
+					} else
+					{
+						JOptionPane.showMessageDialog(error, "File name already exists.", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			} catch ( FileNotFoundException ex )
+			{
+				ex.printStackTrace();
+			} catch ( IOException ex )
+			{
+				ex.printStackTrace();
+			}
 		}
 	});
 }
