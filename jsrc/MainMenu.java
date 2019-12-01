@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -87,6 +88,7 @@ public MainMenu( )
 		@Override
 		public void actionPerformed( final ActionEvent e )
 		{
+			//learned how to use JFileChooser from https://www.geeksforgeeks.org/java-swing-jfilechooser/
 			//this is a fileChooser used to store the selected file
 			JFileChooser selectedImage = new JFileChooser(FileSystemView.getFileSystemView());
 
@@ -106,7 +108,7 @@ public MainMenu( )
 					//declares the buffered image to be the image that is selected by the user
 					image = ImageIO.read(imageFile);
 					//"converts" the image into an icon and scales it to match the size of the jlabel
-					ImageIcon icon = new ImageIcon(image.getScaledInstance(150, 300, image.SCALE_FAST));
+					ImageIcon icon = new ImageIcon(image.getScaledInstance(150, 300, Image.SCALE_SMOOTH));
 					//sets imageLabel to hold the image
 					imageLabel.setIcon(icon);
 					//gets the absolute path of the selected image and sets the text into the chosenImageFiles TextArea
@@ -179,11 +181,6 @@ public MainMenu( )
 		{
 			saveButton.setToolTipText(
 				"If you would like to save this file to a specific place then enter absolute path with name at the end of last \\");
-			//Make a new textbox that asks for name of file
-			//When users clicks save, it checks whether it is empty or not
-			//make PrintWrite hold the name
-			//savingText.println(editedText); --> this will print to the file
-			//gets the text that has been transcribed
 
 			//this is the raw file name without extension that user will enter
 			//User can choose to store file anyhwhere by entering the absolute path of the location and then making name of file last
@@ -195,14 +192,13 @@ public MainMenu( )
 			//This is the text that the user has edited in the GUI
 			String editedText = outPutOfImage.getText();
 
-			//needs logic to be saved to a file
 			try
 			{
 				//is the user has not entered a file name to save then show error
 				if ( rawFileName.equals("") )
 				{
 					JOptionPane.showMessageDialog(error, "Please enter a name for the file you are trying to save.",
-						"ERROR", JOptionPane.ERROR_MESSAGE);
+						"File Name Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
 					//Creates a new file object (with name user entered) to store the file
@@ -220,7 +216,7 @@ public MainMenu( )
 						savingText.close();
 					} else
 					{
-						JOptionPane.showMessageDialog(error, "File name already exists.", "ERROR",
+						JOptionPane.showMessageDialog(error, "File name already exists.", "Duplicate File Names",
 							JOptionPane.ERROR_MESSAGE);
 					}
 				}
