@@ -1,9 +1,14 @@
-import jep.Interpreter;
+/*import jep.Interpreter;
 import jep.JepConfig;
 import jep.JepException;
 import jep.SubInterpreter;
 import jep.python.PyCallable;
 import jep.python.PyObject;
+*/
+
+import com.baidu.aip.ocr.AipOcr;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,28 +20,34 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class MainMenu
 {
+
+public static final String appId = "15289864";
+public static final String apiKey = "j0pj5Y7HVElkLnmn2LEXKeyO";
+public static final String secretKey = "FKVbH7EBcGy4DIaqPnXcqE47eACzn2W7";
+//Sets up API connection
+AipOcr client = new AipOcr(appId, apiKey, secretKey);
+
+
 public JPanel rootPanel;
 
 private JButton chooseSourceImageButton;
 private JButton trainNeuralNetworkButton;
-private JTextArea isTrained;
 private JButton transcribeButton;
 private JTextArea chosenImageFiles;
 private JTextPane outPutOfImage;
 private JLabel imageLabel;
-private JButton tesseractButton;
 private JButton saveButton;
 private JTextPane textFileName;
 private JTextPane error;
 
+private String chosenImageFilePath = null;
 public MainMenu( )
 {
-	isTrained.setText("Neural Network is not yet trained");
+	/*isTrained.setText("Neural Network is not yet trained");
 
 	JepConfig jConfig = new JepConfig().addIncludePaths("./CNNRNN")
 									   .addIncludePaths("./CNNTXT");
@@ -50,7 +61,7 @@ public MainMenu( )
 			isTrained.setText("Neural Network is now training");
 			rootPanel.update(rootPanel.getGraphics());
 
-			try ( Interpreter interp = new SubInterpreter(jConfig) )
+			/*(try ( Interpreter interp = new SubInterpreter(jConfig) )
 			{
 				PyObject pySysObj = interp.getValue("sys", PyObject.class);
 
@@ -69,7 +80,7 @@ public MainMenu( )
 				isTrained.setText("Neural Network training failed: neural network is not yet trained");
 			}
 		}
-	});
+	});*/
 
 	chooseSourceImageButton.addActionListener(new ActionListener()
 	{
@@ -87,7 +98,7 @@ public MainMenu( )
 			{
 				//holds the file selected by user
 				File imageFile = new File(selectedImage.getSelectedFile()
-									.getAbsolutePath());
+													   .getAbsolutePath());
 				BufferedImage image = null;
 
 				try
@@ -99,8 +110,9 @@ public MainMenu( )
 					//sets imageLabel to hold the image
 					imageLabel.setIcon(icon);
 					//gets the absolute path of the selected image and sets the text into the chosenImageFiles TextArea
-					chosenImageFiles.setText(selectedImage.getSelectedFile()
-														  .getAbsolutePath());
+					chosenImageFilePath = selectedImage.getSelectedFile()
+													   .getAbsolutePath();
+					chosenImageFiles.setText(chosenImageFilePath);
 				} catch ( IOException ex )
 				{
 					ex.printStackTrace();
@@ -114,9 +126,9 @@ public MainMenu( )
 		public void actionPerformed( final ActionEvent e )
 		{
 			//TODO use Jython Interpreter to invoke python code to use the current NN's on the loaded image
-
-
-			try ( Interpreter interp = new SubInterpreter(jConfig) )
+			String transcribedText = imgOcr(chosenImageFilePath);
+			outPutOfImage.setText(transcribedText);
+			/*try ( Interpreter interp = new SubInterpreter(jConfig) )
 			{
 				PyObject pySysObj = interp.getValue("sys", PyObject.class);
 
@@ -139,7 +151,7 @@ public MainMenu( )
 
 				interp.exec("eval");
 
-				/*
+
 				interp.exec("import nbformat\n" +
 							"from nbconvert.preprocessors import ExecutePreprocessor");
 
@@ -150,13 +162,13 @@ public MainMenu( )
 				interp.exec("with open(notebookPath) as f:\n" +
 							"    nb = nbformat.read(f, as_version=4)");
 				interp.exec("ep.preprocess(nb, {'metadata': {'path': 'notebooks/'}})");
-				*/
+
 
 			} catch ( JepException ex )
 			{
 				System.err.println("Python interpreter failed while running the neural network on new input data:");
 				ex.printStackTrace();
-			}
+			}*/
 		}
 	});
 
@@ -221,6 +233,29 @@ public MainMenu( )
 			}
 		}
 	});
+}
+
+public String imgOcr( String imgpath )
+{
+	HashMap<String, String> options = new HashMap<String, String>();
+	options.put("language_type", "CHN_ENG");
+	options.put("detect_direction", "true");
+	options.put("detect_language", "true");
+	options.put("probability", "true");
+
+	JSONObject res = client.basicGeneral(imgpath, options);
+
+	JSONArray wordsResult = (JSONArray) res.get("words_result");
+	String ocrStr = "\n";
+	for ( Object obj : wordsResult )
+	{
+		JSONObject jo = (JSONObject) obj;
+		ocrStr += jo.getString("words") + "\n";
+	}
+
+	return ocrStr;
+	// return res.toString(2);
+
 }
 
 private void createUIComponents( )
