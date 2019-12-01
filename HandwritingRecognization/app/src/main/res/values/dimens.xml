@@ -1,7 +1,0 @@
-<resources>
-    <dimen name="fab_margin">16dp</dimen>
-
-    <dimen name="linear_margin_top">30dp</dimen>
-    <dimen name="linear_margin_left">10dp</dimen>
-    <dimen name="tvFontSize">15sp</dimen>
-</resources>
