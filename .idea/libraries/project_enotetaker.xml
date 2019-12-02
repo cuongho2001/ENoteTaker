@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="project-enotetaker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/json-20160810.jar!/" />
+      <root url="jar://$PROJECT_DIR$/aip-java-sdk-4.8.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/log4j-1.2.17.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

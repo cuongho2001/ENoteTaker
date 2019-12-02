@@ -26,9 +26,9 @@ import java.util.HashMap;
 public class MainMenu
 {
 
-public static final String appId = "15289864";
-public static final String apiKey = "j0pj5Y7HVElkLnmn2LEXKeyO";
-public static final String secretKey = "FKVbH7EBcGy4DIaqPnXcqE47eACzn2W7";
+public static final String appId = "17900373";
+public static final String apiKey = "B0Hv0D5bVQKHk2yCPOHoIdhY";
+public static final String secretKey = "dCox7HQhDN2253NysmfQH5v8kZqeh3qV";
 //Sets up API connection
 AipOcr client = new AipOcr(appId, apiKey, secretKey);
 
@@ -234,10 +234,8 @@ public MainMenu( )
 public String imgOcr( String imgpath )
 {
 	HashMap<String, String> options = new HashMap<String, String>();
-	options.put("language_type", "CHN_ENG");
-	options.put("detect_direction", "true");
-	options.put("detect_language", "true");
-	options.put("probability", "true");
+	options.put("recognize_granularity", "big");
+
 
 	JSONObject res = client.basicGeneral(imgpath, options);
 
