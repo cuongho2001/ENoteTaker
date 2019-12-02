@@ -4,8 +4,37 @@ import numpy as np
 import tensorflow as tf
 
 
-def set_tf_flag(flag_name, flag_val, flag_help):
-    tf.flags.DEFINE_string(flag_name, flag_val, flag_help)
+def set_tf_str_flag(flag_name, flag_val, flag_help):
+    if not tf.flags.FLAGS.__contains__(flag_name):
+        tf.flags.DEFINE_string(flag_name, flag_val, flag_help)
+    # todo deal with alternative case so that existing flag value can be overwritten?
+    # else:
+    # tf.flags.FLAGS[flag_name] = flag_val
+
+
+def set_tf_int_flag(flag_name, flag_val, flag_help):
+    if not tf.flags.FLAGS.__contains__(flag_name):
+        tf.flags.DEFINE_integer(flag_name, flag_val, flag_help)
+    # todo deal with alternative case so that existing flag value can be overwritten?
+    # else:
+    # tf.flags.FLAGS[flag_name] = flag_val
+
+
+def set_tf_float_flag(flag_name, flag_val, flag_help):
+    if not tf.flags.FLAGS.__contains__(flag_name):
+        tf.flags.DEFINE_float(flag_name, flag_val, flag_help)
+    # todo deal with alternative case so that existing flag value can be overwritten?
+    # else:
+    # tf.flags.FLAGS[flag_name] = flag_val
+
+
+def set_tf_bool_flag(flag_name, flag_val, flag_help):
+    if not tf.flags.FLAGS.__contains__(flag_name):
+        tf.flags.DEFINE_boolean(flag_name, flag_val, flag_help)
+    # todo deal with alternative case so that existing flag value can be overwritten?
+    # else:
+    # tf.flags.FLAGS[flag_name] = flag_val
+
 
 
 def clean_str(string):

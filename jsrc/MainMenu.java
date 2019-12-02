@@ -1,12 +1,10 @@
-/*import jep.Interpreter;
+import com.baidu.aip.ocr.AipOcr;
+import jep.Interpreter;
 import jep.JepConfig;
 import jep.JepException;
-import jep.SubInterpreter;
+import jep.SharedInterpreter;
 import jep.python.PyCallable;
 import jep.python.PyObject;
-*/
-
-import com.baidu.aip.ocr.AipOcr;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,10 +18,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainMenu
 {
+private final String programName = "EnoteTaker";
 
 public static final String appId = "15289864";
 public static final String apiKey = "j0pj5Y7HVElkLnmn2LEXKeyO";
@@ -34,8 +35,8 @@ AipOcr client = new AipOcr(appId, apiKey, secretKey);
 public JPanel rootPanel;
 
 private JButton chooseSourceImageButton;
-//private JButton trainNeuralNetworkButton;
-//private JTextArea isTrained;
+private JButton trainNeuralNetworkButton;
+private JTextArea isTrained;
 private JButton transcribeButton;
 private JTextArea chosenImageFiles;
 private JTextPane outPutOfImage;
@@ -47,11 +48,17 @@ private JTextPane error;
 private String chosenImageFilePath = null;
 public MainMenu( )
 {
-	/*isTrained.setText("Neural Network is not yet trained");
+	isTrained.setText("Neural Network is not yet trained");
+	//	System.out.println("about to set up jep config");System.out.flush();
 
 	JepConfig jConfig = new JepConfig().addIncludePaths("./CNNRNN")
 									   .addIncludePaths("./CNNTXT");
 
+	try
+	{
+		SharedInterpreter.setConfig(jConfig);
+	} catch ( JepException e ) { e.printStackTrace(); }
+	//	System.out.println("successfully set up jep config");System.out.flush();
 
 	trainNeuralNetworkButton.addActionListener(new ActionListener()
 	{
@@ -61,8 +68,11 @@ public MainMenu( )
 			isTrained.setText("Neural Network is now training");
 			rootPanel.update(rootPanel.getGraphics());
 
-			/*(try ( Interpreter interp = new SubInterpreter(jConfig) )
+			//			System.out.println("about to initialize interpreter for train");System.out.flush();
+			try ( Interpreter interp = new SharedInterpreter() )
 			{
+				//				System.out.println("about to set up interpreter argv for train");System.out.flush();
+				interp.exec("import sys");
 				PyObject pySysObj = interp.getValue("sys", PyObject.class);
 
 				List<String> pyArgv = new ArrayList<>();
@@ -70,17 +80,21 @@ public MainMenu( )
 				pySysObj.setAttr("argv", pyArgv);
 
 				interp.exec("import train");
-				interp.exec("train.main()");
+				interp.invoke("train.main");
+				//todo have train.main() return the run number which it stored the training results under
+				//				System.out.println("finishing running train.py script");System.out.flush();
 
 				isTrained.setText("Neural Network is trained");
 			} catch ( JepException ex )
 			{
 				System.err.println("Python interpreter failed while training the neural network:");
 				ex.printStackTrace();
+				System.out.flush();
+				System.err.flush();
 				isTrained.setText("Neural Network training failed: neural network is not yet trained");
 			}
 		}
-	});*/
+	});
 
 	chooseSourceImageButton.addActionListener(new ActionListener()
 	{
@@ -126,49 +140,51 @@ public MainMenu( )
 		public void actionPerformed( final ActionEvent e )
 		{
 			//TODO use Jython Interpreter to invoke python code to use the current NN's on the loaded image
-			String transcribedText = imgOcr(chosenImageFilePath);
-			outPutOfImage.setText(transcribedText);
-			/*try ( Interpreter interp = new SubInterpreter(jConfig) )
+			//			String transcribedText = imgOcr(chosenImageFilePath);
+			//			outPutOfImage.setText(transcribedText);
+
+			//			System.out.println("about to initialize interpreter for eval");System.out.flush();
+			try ( Interpreter interp = new SharedInterpreter() )
 			{
+				//				System.out.println("about to set up interpreter argv for eval");System.out.flush();
+				interp.exec("import sys");
 				PyObject pySysObj = interp.getValue("sys", PyObject.class);
 
 				List<String> pyArgv = new ArrayList<>();
 				pyArgv.add(programName);
 				pySysObj.setAttr("argv", pyArgv);
 
+				//				System.out.println("about to set up tensorflow flags for eval input files");System.out.flush();
 				String pyPosDataFilePath = "./CNNRNN/data/rt-polaritydata/rt-polarity.pos";
 				String pyNegDataFilePath = "./CNNRNN/data/rt-polaritydata/rt-polarity.neg";
 
+				String trainingRunId = "1575268589";
+
+				//todo replace this with simply passing the file paths to the invocation of eval.py's main method
 				interp.exec("import data_helpers");
-				interp.exec("from data_helpers import set_tf_flag");
-				PyCallable pyDefineStrFlag = interp.getValue("set_tf_flag", PyCallable.class);
+				interp.exec("from data_helpers import set_tf_str_flag");
+				PyCallable pyDefineStrFlag = interp.getValue("set_tf_str_flag", PyCallable.class);
 				pyDefineStrFlag.call("positive_input_data_file", pyPosDataFilePath,
 					"path of file with positive input data");
 				pyDefineStrFlag.call("negative_input_data_file", pyNegDataFilePath,
 					"path of file with negative input data");
 
+				//				System.out.println("about to import eval");System.out.flush();
 				interp.exec("import eval");
 
-				interp.exec("eval");
+				//				System.out.println("about to run eval");System.out.flush();
+				//todo modify code to pass source-file paths as args to this invocation
+				interp.invoke("eval.main");
 
-
-				interp.exec("import nbformat\n" +
-							"from nbconvert.preprocessors import ExecutePreprocessor");
-
-				interp.exec("ep = ExecutePreprocessor(timeout=600, kernel_name='python3')");
-
-				final String pyCnnPredictNotebookPath = "./CNNTXT/CNN/Model Predict.ipynb";
-				interp.set("notebookPath", pyCnnPredictNotebookPath);
-				interp.exec("with open(notebookPath) as f:\n" +
-							"    nb = nbformat.read(f, as_version=4)");
-				interp.exec("ep.preprocess(nb, {'metadata': {'path': 'notebooks/'}})");
-
+				//				System.out.println("\neval completed");System.out.flush();
 
 			} catch ( JepException ex )
 			{
 				System.err.println("Python interpreter failed while running the neural network on new input data:");
 				ex.printStackTrace();
-			}*/
+				System.out.flush();
+				System.err.flush();
+			}
 		}
 	});
 
@@ -227,10 +243,9 @@ public MainMenu( )
 			} catch ( FileNotFoundException ex )
 			{
 				ex.printStackTrace();
-			} catch ( IOException ex )
-			{
-				ex.printStackTrace();
 			}
+
+			//			System.out.println("transcribe button press completed");System.out.flush();
 		}
 	});
 }

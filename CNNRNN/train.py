@@ -1,23 +1,36 @@
 #! /usr/bin/env python
 
+# print("\nimporting modules", flush=True)
+# print("\nimporting datetime module", flush=True)
 import datetime
+# print("\nimporting os module", flush=True)
 import os
+# print("\nimporting time module", flush=True)
 import time
 
+# print("\nimporting data_helpers module", flush=True)
 import data_helpers
+# print("\nimporting numpy module", flush=True)
 import numpy as np
+# print("\nimporting tensorflow module", flush=True)
 import tensorflow as tf
-from tensorflow.contrib import learn
+# print("\nimporting tensorflow.contrib module's learn", flush=True)
+import tensorflow.contrib
+# print("\nimporting text_cnn module's TextCNN", flush=True)
 from text_cnn import TextCNN
 
 # Parameters
 # ==================================================
 
+# print("\ndefining tf flags", flush=True)
+
+# print("\nduring import of train argv has value:[" + str(sys.argv) + "]", flush=True)
+
 # Data loading params
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
-tf.flags.DEFINE_string("positive_data_file", "./CNNRNN/data/rt-polaritydata/rt-polarity.pos",
+data_helpers.set_tf_str_flag("positive_data_file", "./CNNRNN/data/rt-polaritydata/rt-polarity.pos",
                        "Data source for the positive data.")
-tf.flags.DEFINE_string("negative_data_file", "./CNNRNN/data/rt-polaritydata/rt-polarity.neg",
+data_helpers.set_tf_str_flag("negative_data_file", "./CNNRNN/data/rt-polaritydata/rt-polarity.neg",
                        "Data source for the negative data.")
 
 # Model Hyperparameters
@@ -28,14 +41,14 @@ tf.flags.DEFINE_float("dropout_keep_prob", 0.5, "Dropout keep probability (defau
 tf.flags.DEFINE_float("l2_reg_lambda", 0.0, "L2 regularization lambda (default: 0.0)")
 
 # Training parameters
-tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
-tf.flags.DEFINE_integer("num_epochs", 200, "Number of training epochs (default: 200)")
+data_helpers.set_tf_int_flag("batch_size", 64, "Batch Size (default: 64)")
+tf.flags.DEFINE_integer("num_epochs", 2, "Number of training epochs (default: 200)")
 tf.flags.DEFINE_integer("evaluate_every", 100, "Evaluate model on dev set after this many steps (default: 100)")
 tf.flags.DEFINE_integer("checkpoint_every", 100, "Save model after this many steps (default: 100)")
 tf.flags.DEFINE_integer("num_checkpoints", 5, "Number of checkpoints to store (default: 5)")
 # Misc Parameters
-tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
-tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
+data_helpers.set_tf_bool_flag("allow_soft_placement", True, "Allow device soft device placement")
+data_helpers.set_tf_bool_flag("log_device_placement", False, "Log placement of ops on devices")
 
 FLAGS = tf.flags.FLAGS
 # FLAGS._parse_flags()
@@ -49,21 +62,25 @@ def preprocess():
     # ==================================================
 
     # Load data
-    print("Loading data...")
+    print("\nLoading data...", flush=True)
     x_text, y = data_helpers.load_data_and_labels(FLAGS.positive_data_file, FLAGS.negative_data_file)
 
     # Build vocabulary
+    # print("\nbuilding vocabulary", flush=True)
     max_document_length = max([len(x.split(" ")) for x in x_text])
-    vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
+    vocab_processor = tensorflow.contrib.learn.preprocessing.VocabularyProcessor(
+        max_document_length)
     x = np.array(list(vocab_processor.fit_transform(x_text)))
 
     # Randomly shuffle data
+    # print("\nshuffling data", flush=True)
     np.random.seed(10)
     shuffle_indices = np.random.permutation(np.arange(len(y)))
     x_shuffled = x[shuffle_indices]
     y_shuffled = y[shuffle_indices]
 
     # Split train/test set
+    # print("\nsplit train/test datasets...", flush=True)
     # TODO: This is very crude, should use cross-validation
     dev_sample_index = -1 * int(FLAGS.dev_sample_percentage * float(len(y)))
     x_train, x_dev = x_shuffled[:dev_sample_index], x_shuffled[dev_sample_index:]
@@ -71,14 +88,15 @@ def preprocess():
 
     del x, y, x_shuffled, y_shuffled
 
-    print("Vocabulary Size: {:d}".format(len(vocab_processor.vocabulary_)))
-    print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
+    print("Vocabulary Size: {:d}".format(len(vocab_processor.vocabulary_)), flush=True)
+    print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)), flush=True)
     return x_train, y_train, vocab_processor, x_dev, y_dev
 
 def train(x_train, y_train, vocab_processor, x_dev, y_dev):
     # Training
     # ==================================================
 
+    # print("\nsetting up tensorflow session...", flush=True)
     with tf.Graph().as_default():
         session_conf = tf.ConfigProto(
           allow_soft_placement=FLAGS.allow_soft_placement,
@@ -113,7 +131,7 @@ def train(x_train, y_train, vocab_processor, x_dev, y_dev):
             # Output directory for models and summaries
             timestamp = str(int(time.time()))
             out_dir = os.path.abspath(os.path.join(os.path.curdir, "runs", timestamp))
-            print("Writing to {}\n".format(out_dir))
+            print("Writing to {}\n".format(out_dir), flush=True)
 
             # Summaries for loss and accuracy
             loss_summary = tf.summary.scalar("loss", cnn.loss)
@@ -155,7 +173,8 @@ def train(x_train, y_train, vocab_processor, x_dev, y_dev):
                     [train_op, global_step, train_summary_op, cnn.loss, cnn.accuracy],
                     feed_dict)
                 time_str = datetime.datetime.now().isoformat()
-                print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
+                print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy),
+                      flush=True)
                 train_summary_writer.add_summary(summaries, step)
 
             def dev_step(x_batch, y_batch, writer=None):
@@ -171,7 +190,8 @@ def train(x_train, y_train, vocab_processor, x_dev, y_dev):
                     [global_step, dev_summary_op, cnn.loss, cnn.accuracy],
                     feed_dict)
                 time_str = datetime.datetime.now().isoformat()
-                print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
+                print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy),
+                      flush=True)
                 if writer:
                     writer.add_summary(summaries, step)
 
@@ -184,16 +204,19 @@ def train(x_train, y_train, vocab_processor, x_dev, y_dev):
                 train_step(x_batch, y_batch)
                 current_step = tf.train.global_step(sess, global_step)
                 if current_step % FLAGS.evaluate_every == 0:
-                    print("\nEvaluation:")
+                    print("\nEvaluation:", flush=True)
                     dev_step(x_dev, y_dev, writer=dev_summary_writer)
-                    print("")
+                    print("", flush=True)
                 if current_step % FLAGS.checkpoint_every == 0:
                     path = saver.save(sess, checkpoint_prefix, global_step=current_step)
-                    print("Saved model checkpoint to {}\n".format(path))
+                    print("Saved model checkpoint to {}\n".format(path), flush=True)
+
 
 def main(argv=None):
     x_train, y_train, vocab_processor, x_dev, y_dev = preprocess()
     train(x_train, y_train, vocab_processor, x_dev, y_dev)
+    # print("\ntrain.main() is finished", flush=True)
+    return
 
 if __name__ == '__main__':
     tf.app.run()
