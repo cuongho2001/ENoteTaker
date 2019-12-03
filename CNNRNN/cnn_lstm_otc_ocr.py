@@ -13,7 +13,8 @@ class LSTMOCR(object):
     def __init__(self, mode):
         self.mode = mode
         # image
-        self.inputs = tf.placeholder(tf.float32, [None, FLAGS.image_height, FLAGS.image_width, FLAGS.image_channel])
+        self.inputs = tf.placeholder(tf.float32, [None, FLAGS.image_height, FLAGS.image_width,
+                                                  FLAGS.image_channel])
         # SparseTensor required by ctc_loss op
         self.labels = tf.sparse_placeholder(tf.int32)
         # 1d array of size [batch_size]
@@ -46,7 +47,8 @@ class LSTMOCR(object):
             x = self.inputs
             for i in range(FLAGS.cnn_count):
                 with tf.variable_scope('unit-%d' % (i + 1)):
-                    x = self._conv2d(x, 'cnn-%d' % (i + 1), 3, filters[i], filters[i + 1], strides[0])
+                    x = self._conv2d(x, 'cnn-%d' % (i + 1), 3, filters[i], filters[i + 1],
+                                     strides[0])
                     x = self._batch_norm('bn%d' % (i + 1), x)
                     x = self._leaky_relu(x, FLAGS.leakiness)
                     x = self._max_pool(x, 2, strides[1])
@@ -57,7 +59,8 @@ class LSTMOCR(object):
 
         # LSTM part
         with tf.variable_scope('lstm'):
-            x = tf.transpose(x, [0, 2, 1, 3])  # [batch_size, feature_w, feature_h, FLAGS.out_channels]
+            x = tf.transpose(x,
+                             [0, 2, 1, 3])  # [batch_size, feature_w, feature_h, FLAGS.out_channels]
             # treat `feature_w` as max_timestep in lstm.
             x = tf.reshape(x, [FLAGS.batch_size, feature_w, feature_h * FLAGS.out_channels])
             print('lstm input shape: {}'.format(x.get_shape().as_list()))
@@ -67,11 +70,13 @@ class LSTMOCR(object):
             # tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell
             cell = tf.nn.rnn_cell.LSTMCell(FLAGS.num_hidden, state_is_tuple=True)
             if self.mode == 'train':
-                cell = tf.nn.rnn_cell.DropoutWrapper(cell=cell, output_keep_prob=FLAGS.output_keep_prob)
+                cell = tf.nn.rnn_cell.DropoutWrapper(cell=cell,
+                                                     output_keep_prob=FLAGS.output_keep_prob)
 
             cell1 = tf.nn.rnn_cell.LSTMCell(FLAGS.num_hidden, state_is_tuple=True)
             if self.mode == 'train':
-                cell1 = tf.nn.rnn_cell.DropoutWrapper(cell=cell1, output_keep_prob=FLAGS.output_keep_prob)
+                cell1 = tf.nn.rnn_cell.DropoutWrapper(cell=cell1,
+                                                      output_keep_prob=FLAGS.output_keep_prob)
 
             # Stacking rnn cells
             stack = tf.nn.rnn_cell.MultiRNNCell([cell, cell1], state_is_tuple=True)
@@ -88,7 +93,8 @@ class LSTMOCR(object):
             )  # [batch_size, max_stepsize, FLAGS.num_hidden]
 
             # Reshaping to apply the same weights over the timesteps
-            outputs = tf.reshape(outputs, [-1, FLAGS.num_hidden])  # [batch_size * max_stepsize, FLAGS.num_hidden]
+            outputs = tf.reshape(outputs, [-1,
+                                           FLAGS.num_hidden])  # [batch_size * max_stepsize, FLAGS.num_hidden]
 
             W = tf.get_variable(name='W_out',
                                 shape=[FLAGS.num_hidden, num_classes],

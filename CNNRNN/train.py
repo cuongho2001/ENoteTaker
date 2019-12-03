@@ -1,13 +1,13 @@
 #! /usr/bin/env python
 
 import datetime
-import numpy as np
 import os
-import tensorflow as tf
 import time
-from tensorflow.contrib import learn
 
 import data_helpers
+import numpy as np
+import tensorflow as tf
+from tensorflow.contrib import learn
 from text_cnn import TextCNN
 
 # Parameters

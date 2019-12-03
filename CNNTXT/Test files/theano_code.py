@@ -1,6 +1,7 @@
-from theano import function, config, shared, tensor
-import numpy
 import time
+
+import numpy
+from theano import function, config, shared, tensor
 
 vlen = 10 * 30 * 768  # 10 x #cores x # threads per core
 iters = 1000

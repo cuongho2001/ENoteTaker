@@ -31,11 +31,11 @@ public static final String secretKey = "FKVbH7EBcGy4DIaqPnXcqE47eACzn2W7";
 //Sets up API connection
 AipOcr client = new AipOcr(appId, apiKey, secretKey);
 
-
 public JPanel rootPanel;
 
 private JButton chooseSourceImageButton;
-private JButton trainNeuralNetworkButton;
+//private JButton trainNeuralNetworkButton;
+//private JTextArea isTrained;
 private JButton transcribeButton;
 private JTextArea chosenImageFiles;
 private JTextPane outPutOfImage;

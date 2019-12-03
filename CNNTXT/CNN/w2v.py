@@ -1,8 +1,10 @@
 from __future__ import print_function
-from gensim.models import word2vec
-from os.path import join, exists, split
+
 import os
+from os.path import join, exists, split
+
 import numpy as np
+from gensim.models import word2vec
 
 
 def train_word2vec(sentence_matrix, vocabulary_inv,
@@ -19,7 +21,8 @@ def train_word2vec(sentence_matrix, vocabulary_inv,
     context         # Context window size 
     """
     model_dir = 'models'
-    model_name = "{:d}features_{:d}minwords_{:d}context".format(num_features, min_word_count, context)
+    model_name = "{:d}features_{:d}minwords_{:d}context".format(num_features, min_word_count,
+                                                                context)
     model_name = join(model_dir, model_name)
     if exists(model_name):
         embedding_model = word2vec.Word2Vec.load(model_name)
