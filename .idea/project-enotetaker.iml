@@ -55,5 +55,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Python 3.7 (project-enotetaker) interpreter library" level="application" />
+    <orderEntry type="library" name="transcription_api_libraries" level="project" />
   </component>
 </module>
