@@ -147,7 +147,10 @@ Replace the checkpoint dir with the output from the training. To use your own da
 - [A Sensitivity Analysis of (and Practitioners' Guide to) Convolutional Neural Networks for Sentence Classification](http://arxiv.org/abs/1510.03820)
 
 ## Testing
-System Testing
+## System Testing
+
 In this testing phase the team made sure that the project worked as a whole, the machine learning and GUI combined. In order to test for this, we put ourselves in the shoes of users who needed to have their class notes transcribed onto the computer. A photo was taken of Scott’s notes and uploaded onto his computer. He then ran the program and clicked the “choose image” button this opened up the file selection window and he was able to navigate to where his file was located and selected it. Once selected, a thumbnail of the picture was displayed on the program and the file path was printed out. These actions indicated that the picture selection and display, and file path printing all worked without error. Then he clicked the “transcribe” button which ran backend code and displayed the transcribed text onto the text pane and edited. This indicated that the transcribing aspect of the program also worked. Finally, he copied the file path of the location where he wanted to save it and pasted it into the text pane and clicked the “save” button. He checked to make sure that it was saved in his desired location and that the edits were saved, all tests passed. 
-Validation Testing
+
+## Validation Testing
+
 For the machine learning codes, we tests the python codes in Jupiter notebook line by line before moving to the next code block, you can see the output results right below the executed code blocks. If any codes did not output the proper results we head back to the previous code blocks and fix the codes that associate with the problems. In the end, all tests passed and codes in Jupiter notebook showed the proper final output results.
